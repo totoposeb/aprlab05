@@ -48,7 +48,7 @@ parse_pokemon <- function(json) {
 }
 
 
-# 2.get the species attributes.
+# 2. get the species attributes
 # e.g. "pokemon-species/pikachu"
 parse_species <- function(json) {
   name <- json$name
@@ -78,27 +78,6 @@ parse_species <- function(json) {
     rarity_level = rarity_level,
     stringsAsFactors = FALSE
   )
-}
-
-# define different rarity_level
-rarity_level <- if(is_legendary){
-  'Legendary' 
-} else if (is_mythical){
-  'Mythical'
-} else if (capture_rate <= 50){
-  'Rare'
-} else if (capture_rate <=150){
-  'Uncommon'
-} else {
-  'Common'
-}
-data.frame(
-  name = json$name,
-  capture_rate = capture_rate,
-  growth_rate = growth_rate,
-  rarity_level = rarity_level,
-  stringsAsFactors = FALSE # keep the original type, avoid chararter mistake.
-)
 }
 
 
