@@ -1,3 +1,43 @@
+#' A Pokémon Object
+#'
+#' An RC class representing a Pokémon. Creating an object requires an internet connection.
+#'
+#' @field name The name of the Pokémon.
+#' @field id The Pokédex ID.
+#' @field height The height in decimetres.
+#' @field weight The weight in hectograms.
+#' @field base_experience The base experience.
+#' @field types A character vector of types.
+#' @field stats A data frame of base stats.
+#' @field abilities A character vector of abilities.
+#' @field species The species name.
+#' @field evolution_chain The evolution chain.
+#' @field moves A character vector of moves.
+#' @field sprites A list of sprite URLs.
+#' @field cries A list of cry URLs.
+#' @field held_items A data frame of held items.
+#' @field location_area_encounters The location area encounters URL.
+#' @field is_legendary Logical. Is it legendary?
+#' @field is_mythical Logical. Is it mythical?
+#' @field rarity The rarity level (our own definition).
+#'
+#' @section Methods:
+#' \describe{
+#'   \item{\code{data()}}{Return the main data frame.}
+#'   \item{\code{types()}}{Return the types.}
+#'   \item{\code{stats()}}{Return the stats.}
+#'   \item{\code{abilities()}}{Return the abilities.}
+#'   \item{\code{moves()}}{Return the moves.}
+#' }
+#'
+#' @examplesIf httr2::is_online()
+#' p <- pokemon$new("bulbasaur")
+#' p$data()
+#'
+#' @importFrom methods new setRefClass
+#' @importFrom ggplot2 ggplot
+#' @export pokemon
+#' @exportClass pokemon
 pokemon <- setRefClass(
   "pokemon", # "pokemon" is the class name
   fields  = list(

@@ -18,7 +18,8 @@ Imports:
     jsonlite,
     methods,
     png,
-    memoise
+    memoise,
+    purrr
 Suggests: 
     knitr,
     rmarkdown,

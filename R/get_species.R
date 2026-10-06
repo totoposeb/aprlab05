@@ -1,5 +1,12 @@
-#' Get species information for several Pokemon
-#' get_species(c("pikachu", "mewtwo"))
+#' Get Species Information
+#'
+#' Retrieve species-level information for one or more Pokémon.
+#'
+#' @param names A character vector of Pokémon species names.
+#' @return A data frame with columns: ...
+#' @export
+#' @examplesIf httr2::is_online()
+#' get_species("Pikachu")
 
 get_species <- function(names) {
   if (!is.character(names) || length(names) == 0 ||
