@@ -12,7 +12,12 @@ Config/roxygen2/version: 8.1.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports: 
+    ggplot2,
+    grid,
     httr2,
+    jsonlite,
+    methods,
+    png,
     memoise
 Suggests: 
     knitr,
