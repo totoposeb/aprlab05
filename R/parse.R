@@ -56,7 +56,11 @@ parse_species <- function(json) {
   growth_rate <- json$growth_rate$name
   is_legendary <- json$is_legendary
   is_mythical <- json$is_mythical
-  
+  gender_rate <- json$gender_rate
+  evolves_from_species <- json$sp$evolves_from_species$name
+  evolution_chain <- json$evolution_chain$url
+  generation <- json$generation$name
+
   rarity_level <- if (isTRUE(is_legendary)) {
     "Legendary"
   } else if (isTRUE(is_mythical)) {
@@ -71,12 +75,16 @@ parse_species <- function(json) {
     "Common"
   }
   
-  data.frame(
+  list(
     name = name,
     capture_rate = capture_rate,
     growth_rate = growth_rate,
     rarity_level = rarity_level,
-    stringsAsFactors = FALSE
+    stringsAsFactors = FALSE,
+    gender_rate = gender_rate,
+    evolves_from_species = evolves_from_species,
+    evolution_chain = evolution_chain,
+    generation = generation
   )
 }
 
