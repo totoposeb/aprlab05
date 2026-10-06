@@ -65,16 +65,16 @@ pokemon <- setRefClass(
       stopifnot(
         "`name` must be a single string!" = (
           is.character(name) && length(name) == 1 && !is.na(name) &&
-          nzchar(trimws(name))
+            nzchar(trimws(name))
         )
       )
-
+      
       # Gets data
       json <- request_api(paste0("pokemon/", tolower(trimws(name))))
-
+      
       # Parses response
       parsed <- parse_pokemon(json)
-
+      
       # Gets attributes
       id <<- parsed$id
       name <<- parsed$name
@@ -154,9 +154,9 @@ pokemon <- setRefClass(
           ),
           plot.margin = ggplot2::margin(12, 16, 12, 16)
         )
-
+      
       base::print(p1)
-
+      
       # Draws the sprite in the upper right corner, as tall as the title area
       if (!is.na(sprite)) {
         grid::grid.raster(
@@ -168,7 +168,7 @@ pokemon <- setRefClass(
           interpolate = FALSE
         )
       }
-
+      
       invisible(p1)
     },
     show_sprite = function() {
@@ -176,7 +176,7 @@ pokemon <- setRefClass(
       stopifnot(
         "There is no sprite for this Pok\u00e9mon!" = !is.na(sprite)
       )
-
+      
       # Draws the sprite
       draw_sprite(request_sprite(sprite))
     },
@@ -185,26 +185,37 @@ pokemon <- setRefClass(
       stopifnot(
         "There is no image for this Pok\u00e9mon!" = !is.na(image)
       )
-
+      
       # Draws the sprite
       draw_sprite(request_sprite(image))
     },
     show_type_effectiveness = function() {
-
+      mats <- lapply(
+        types, \(type) parse_type(request_api(paste0("type/", type)))
+      )
+      
+      if (length(mats) == 1) {
+        mats[[1]]
+      } else {
+        cbind(
+          attack = pmax(mats[[1]][, "attack"], mats[[2]][, "attack"]),
+          defense = mats[[1]][, "defense"] * mats[[2]][, "defense"]
+        )
+      }
     },
     get_species_info = function() {
       # Calls the API
       json <- request_api(paste0("pokemon-species/", species))
-
+      
       # Parses the pokemon-species/ response
       parsed <- parse_species(json)
-
+      
       rarity_level <<- parsed$rarity_level
       gender_rate <<- parsed$gender_rate
       evolves_from_species <<- parsed$evolves_from_species
       evolution_chain <<- parsed$evolution_chain
       generation <<- parsed$generation
-
+      
       return(parsed)
     }
   )
