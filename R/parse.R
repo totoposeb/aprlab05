@@ -1,5 +1,5 @@
 
-# get the basic attribute:hp,attack,defense,sp_attack,sp_denfense,spped of pokemon
+# 1.get the basic attribute:hp,attack,defense,sp_attack,sp_denfense,spped of pokemon
 # e.g. pokemon/pikachu
 parse_pokemon <- function(json){ #use dataframe for columns and rows
   data.frame(
@@ -13,7 +13,7 @@ parse_pokemon <- function(json){ #use dataframe for columns and rows
   )
 }
 
-#get the species attributes.
+# 2.get the species attributes.
 parse_species <- function(json) { # e.g."pokemon-species/pikachu"
   name = json$name
   capture_rate = json$capture_rate

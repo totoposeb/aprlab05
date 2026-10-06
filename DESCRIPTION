@@ -12,7 +12,8 @@ Config/roxygen2/version: 8.1.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports: 
-    httr2
+    httr2,
+    memoise
 Suggests: 
     knitr,
     rmarkdown,
