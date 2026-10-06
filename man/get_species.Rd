@@ -17,6 +17,6 @@ Retrieve species-level information for one or more Pokémon.
 }
 \examples{
 \dontshow{if (httr2::is_online()) withAutoprint(\{ # examplesIf}
-get_species("Pikachu")
+get_species("Fuecoco")
 \dontshow{\}) # examplesIf}
 }

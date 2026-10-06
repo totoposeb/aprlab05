@@ -6,7 +6,7 @@
 #' @return A data frame with columns: ...
 #' @export
 #' @examplesIf httr2::is_online()
-#' get_species("Pikachu")
+#' get_species("Fuecoco")
 
 get_species <- function(names) {
   if (!is.character(names) || length(names) == 0 ||

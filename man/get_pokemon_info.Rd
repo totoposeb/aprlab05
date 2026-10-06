@@ -23,7 +23,7 @@ for the same Pokémon return instantly.
 }
 \examples{
 \dontrun{
-get_pokemon_info("Pikachu")
+get_pokemon_info("Fuecoco")
 get_pokemon_info(c("Pikachu", "Fuecoco"))
 }
 }

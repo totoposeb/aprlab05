@@ -62,7 +62,7 @@ An RC class representing a Pokémon. Creating an object requires an internet con
 
 \examples{
 \dontshow{if (httr2::is_online()) withAutoprint(\{ # examplesIf}
-p <- pokemon$new("bulbasaur")
-p$data()
+Fuecoco <- pokemon$new("Fuecoco")
+Fuecoco$data()
 \dontshow{\}) # examplesIf}
 }

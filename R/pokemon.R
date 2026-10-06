@@ -31,8 +31,8 @@
 #' }
 #'
 #' @examplesIf httr2::is_online()
-#' p <- pokemon$new("bulbasaur")
-#' p$data()
+#' Fuecoco <- pokemon$new("Fuecoco")
+#' Fuecoco$data()
 #'
 #' @importFrom methods new setRefClass
 #' @importFrom ggplot2 ggplot

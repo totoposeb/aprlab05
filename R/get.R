@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' get_pokemon_info("Pikachu")
+#' get_pokemon_info("Fuecoco")
 #' get_pokemon_info(c("Pikachu", "Fuecoco"))
 #' }
 get_pokemon_info <- function(pokemon_names) {
