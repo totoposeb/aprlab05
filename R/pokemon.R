@@ -1,6 +1,7 @@
 #' A Pokémon Object
 #'
-#' An RC class representing a Pokémon. Creating an object requires an internet connection.
+#' An RC class representing a Pokémon.
+#' Creating an object requires an internet connection.
 #'
 #' @field name The name of the Pokémon.
 #' @field id The Pokédex ID.
@@ -8,31 +9,32 @@
 #' @field weight The weight in hectograms.
 #' @field base_experience The base experience.
 #' @field types A character vector of types.
-#' @field stats A data frame of base stats.
+#' @field stats A named vector of base stats.
 #' @field abilities A character vector of abilities.
 #' @field species The species name.
 #' @field evolution_chain The evolution chain.
 #' @field moves A character vector of moves.
-#' @field sprites A list of sprite URLs.
-#' @field cries A list of cry URLs.
-#' @field held_items A data frame of held items.
-#' @field location_area_encounters The location area encounters URL.
-#' @field is_legendary Logical. Is it legendary?
-#' @field is_mythical Logical. Is it mythical?
-#' @field rarity The rarity level (our own definition).
+#' @field sprite The sprite URL.
+#' @field image The Home image URL.
+#' @field rarity_level The rarity level (our own definition).
+#' @field gender_rate The gender rate.
+#' @field evolves_from_species The species it evolves from.
+#' @field generation The generation.
 #'
 #' @section Methods:
 #' \describe{
 #'   \item{\code{data()}}{Return the main data frame.}
-#'   \item{\code{types()}}{Return the types.}
-#'   \item{\code{stats()}}{Return the stats.}
-#'   \item{\code{abilities()}}{Return the abilities.}
-#'   \item{\code{moves()}}{Return the moves.}
+#'   \item{\code{show()}}{Print a short summary.}
+#'   \item{\code{plot_stats()}}{Plot the base stats.}
+#'   \item{\code{show_sprite()}}{Draw the sprite.}
+#'   \item{\code{show_image()}}{Draw the Home image.}
+#'   \item{\code{get_type_effectiveness()}}{Return the type multipliers.}
+#'   \item{\code{get_species_info()}}{Get the species data and fill its fields.}
 #' }
 #'
 #' @examplesIf httr2::is_online()
-#' Fuecoco <- pokemon$new("Fuecoco")
-#' Fuecoco$data()
+#' fuecoco <- pokemon$new("fuecoco")
+#' fuecoco$data()
 #'
 #' @importFrom methods new setRefClass
 #' @importFrom ggplot2 ggplot
@@ -189,7 +191,7 @@ pokemon <- setRefClass(
       # Draws the sprite
       draw_sprite(request_sprite(image))
     },
-    show_type_effectiveness = function() {
+    get_type_effectiveness = function() {
       mats <- lapply(
         types, \(type) parse_type(request_api(paste0("type/", type)))
       )

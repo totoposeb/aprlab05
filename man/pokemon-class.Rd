@@ -6,7 +6,8 @@
 \alias{pokemon}
 \title{A Pokémon Object}
 \description{
-An RC class representing a Pokémon. Creating an object requires an internet connection.
+An RC class representing a Pokémon.
+Creating an object requires an internet connection.
 }
 \section{Fields}{
 
@@ -23,7 +24,7 @@ An RC class representing a Pokémon. Creating an object requires an internet con
 
 \item{\code{types}}{A character vector of types.}
 
-\item{\code{stats}}{A data frame of base stats.}
+\item{\code{stats}}{A named vector of base stats.}
 
 \item{\code{abilities}}{A character vector of abilities.}
 
@@ -33,19 +34,17 @@ An RC class representing a Pokémon. Creating an object requires an internet con
 
 \item{\code{moves}}{A character vector of moves.}
 
-\item{\code{sprites}}{A list of sprite URLs.}
+\item{\code{sprite}}{The sprite URL.}
 
-\item{\code{cries}}{A list of cry URLs.}
+\item{\code{image}}{The Home image URL.}
 
-\item{\code{held_items}}{A data frame of held items.}
+\item{\code{rarity_level}}{The rarity level (our own definition).}
 
-\item{\code{location_area_encounters}}{The location area encounters URL.}
+\item{\code{gender_rate}}{The gender rate.}
 
-\item{\code{is_legendary}}{Logical. Is it legendary?}
+\item{\code{evolves_from_species}}{The species it evolves from.}
 
-\item{\code{is_mythical}}{Logical. Is it mythical?}
-
-\item{\code{rarity}}{The rarity level (our own definition).}
+\item{\code{generation}}{The generation.}
 }}
 
 
@@ -53,16 +52,18 @@ An RC class representing a Pokémon. Creating an object requires an internet con
 
 \describe{
 \item{\code{data()}}{Return the main data frame.}
-\item{\code{types()}}{Return the types.}
-\item{\code{stats()}}{Return the stats.}
-\item{\code{abilities()}}{Return the abilities.}
-\item{\code{moves()}}{Return the moves.}
+\item{\code{show()}}{Print a short summary.}
+\item{\code{plot_stats()}}{Plot the base stats.}
+\item{\code{show_sprite()}}{Draw the sprite.}
+\item{\code{show_image()}}{Draw the Home image.}
+\item{\code{get_type_effectiveness()}}{Return the type multipliers.}
+\item{\code{get_species_info()}}{Get the species data and fill its fields.}
 }
 }
 
 \examples{
 \dontshow{if (httr2::is_online()) withAutoprint(\{ # examplesIf}
-Fuecoco <- pokemon$new("Fuecoco")
-Fuecoco$data()
+fuecoco <- pokemon$new("fuecoco")
+fuecoco$data()
 \dontshow{\}) # examplesIf}
 }

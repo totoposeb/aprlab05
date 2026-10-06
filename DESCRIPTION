@@ -17,9 +17,7 @@ Imports:
     httr2,
     jsonlite,
     methods,
-    png,
-    memoise,
-    purrr
+    png
 Suggests: 
     knitr,
     rmarkdown,

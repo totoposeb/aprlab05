@@ -1,4 +1,4 @@
-#' send request to PokéAPI and return JASON
+#' send request to PokéAPI and return JSON
 #'
 #' @param path Character. API path, e.g. "pokemon/pikachu".
 #' @return A list containing the parsed JSON response.
@@ -42,7 +42,7 @@ request_sprite <- function(url) {
 
   status <- httr2::resp_status(resp)
   if (!status %in% c(200, 304)) {
-    stop("Could not download the picture. Status: ", httr2::resp_status(resp), ".")
+    stop("Could not download the picture. Status: ", status, ".")
   }
 
   png::readPNG(httr2::resp_body_raw(resp))
