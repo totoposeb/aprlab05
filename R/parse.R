@@ -81,3 +81,33 @@ parse_species <- function(json) {
 }
 
 
+#3. for type
+
+type_names <- function() {
+  c(
+    "normal", "fire", "water", "electric", "grass", "ice",
+    "fighting", "poison", "ground", "flying", "psychic", "bug",
+    "rock", "ghost", "dragon", "dark", "steel", "fairy"
+  )
+}
+
+names_from <- function(x) {
+  vapply(x, function(e) e$name, character(1))
+}
+
+parse_type <- function(json) {
+  attack <- stats::setNames(rep(1, 18), type_names())
+  defense <- stats::setNames(rep(1, 18), type_names())
+  
+  dr <- json$damage_relations
+  
+  attack[names_from(dr$double_damage_to)] <- 2
+  attack[names_from(dr$half_damage_to)] <- 0.5
+  attack[names_from(dr$no_damage_to)] <- 0
+  
+  defense[names_from(dr$double_damage_from)] <- 2
+  defense[names_from(dr$half_damage_from)] <- 0.5
+  defense[names_from(dr$no_damage_from)] <- 0
+  
+  cbind(attack = attack, defense = defense)
+}
