@@ -150,7 +150,18 @@ pokemon <- setRefClass(
       draw_sprite(request_sprite(image))
     },
     show_type_effectiveness = function() {
+      mats <- lapply(
+        types, \(type) parse_type(request_api(paste0("type/", type)))
+      )
 
+      if (length(mats) == 1) {
+        mats[[1]]
+      } else {
+        cbind(
+          attack = pmax(mats[[1]][, "attack"], mats[[2]][, "attack"]),
+          defense = mats[[1]][, "defense"] * mats[[2]][, "defense"]
+        )
+      }
     },
     get_species_info = function() {
       # Calls the API
