@@ -1,25 +1,84 @@
-
-# 1.get the basic attribute:hp,attack,defense,sp_attack,sp_denfense,spped of pokemon
-# e.g. pokemon/pikachu
-parse_pokemon <- function(json){ #use dataframe for columns and rows
-  data.frame(
+# 1. get the basic attributes of a pokemon
+# e.g. "pokemon/pikachu"
+parse_pokemon <- function(json) {
+  stats_values <- vapply(
+    json$stats,
+    function(s) s$base_stat,
+    numeric(1)
+  )
+  
+  stats_names <- vapply(
+    json$stats,
+    function(s) s$stat$name,
+    character(1)
+  )
+  
+  stats_names <- gsub("-", "_", stats_names)
+  names(stats_values) <- stats_names
+  
+  list(
+    id = json$id,
     name = json$name,
-    hp = json$stat[[1]]$base_stat, # basic value
-    attack = json$stat[[2]]$base_stat,
-    defense = json$stat[[3]]$base_stat,
-    sp_attack = json$stat[[4]]$base_stat,
-    sp_defense = json$stat[[5]]$base_stat,
-    speed = json$stat[[6]]$base_stat
+    base_experience = json$base_experience,
+    height = json$height,
+    weight = json$weight,
+    abilities = vapply(
+      json$abilities,
+      function(a) a$ability$name,
+      character(1)
+    ),
+    moves = vapply(
+      json$moves,
+      function(m) m$move$name,
+      character(1)
+    ),
+    types = vapply(
+      json$types,
+      function(t) t$type$name,
+      character(1)
+    ),
+    stats = stats_values,
+    sprite = if (length(json$sprites$front_default) == 0) {
+      NA_character_
+    } else {
+      json$sprites$front_default
+    },
+    species = json$species$name
   )
 }
 
+
 # 2.get the species attributes.
-parse_species <- function(json) { # e.g."pokemon-species/pikachu"
-  name = json$name
-  capture_rate = json$capture_rate
-  growth_rate = json$growth_rate$name
-  is_legendary = json$is_legendary
-  is_mythical = json$is_mythical
+# e.g. "pokemon-species/pikachu"
+parse_species <- function(json) {
+  name <- json$name
+  capture_rate <- json$capture_rate
+  growth_rate <- json$growth_rate$name
+  is_legendary <- json$is_legendary
+  is_mythical <- json$is_mythical
+  
+  rarity_level <- if (isTRUE(is_legendary)) {
+    "Legendary"
+  } else if (isTRUE(is_mythical)) {
+    "Mythical"
+  } else if (is.na(capture_rate)) {
+    NA_character_
+  } else if (capture_rate <= 50) {
+    "Rare"
+  } else if (capture_rate <= 150) {
+    "Uncommon"
+  } else {
+    "Common"
+  }
+  
+  data.frame(
+    name = name,
+    capture_rate = capture_rate,
+    growth_rate = growth_rate,
+    rarity_level = rarity_level,
+    stringsAsFactors = FALSE
+  )
+}
 
 # define different rarity_level
 rarity_level <- if(is_legendary){
