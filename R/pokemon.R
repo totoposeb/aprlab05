@@ -1,7 +1,6 @@
 pokemon <- setRefClass(
   "pokemon", # "pokemon" is the class name
   fields  = list(
-    name = "character",
     id = "numeric",
     name = "character",
     base_experience = "numeric",
@@ -10,10 +9,11 @@ pokemon <- setRefClass(
     abilities = "character",
     moves = "character",
     sprite = "character",
-    stats = "character",
+    stats = "numeric",
     types = "character",
+    species = "character",
     rarity_level = "character",
-    gender_rate = "numerical",
+    gender_rate = "numeric",
     evolves_from_species = "character",
     evolution_chain = "character",
     generation = "character"
@@ -22,11 +22,13 @@ pokemon <- setRefClass(
     initialize = function(name) { # runs automatically on $new()
       # Validates inputs
       stopifnot(
-        "`name` must be a single string!" = is.character(name) && length(name) == 1
+        "`name` must be a single string!" = (
+          is.character(name) && length(name) == 1 && !is.na(name) && nzchar(trimws(name))
+        )
       )
 
       # Gets data
-      json <- request_api(paste0("pokemon/", name))
+      json <- request_api(paste0("pokemon/", tolower(trimws(name))))
 
       # Parses response
       parsed <- parse_pokemon(json)
@@ -42,6 +44,7 @@ pokemon <- setRefClass(
       sprite <<- parsed$sprite
       stats <<- parsed$stats
       types <<- parsed$types
+      species <<- parsed$species
     },
     data = function() {
       data.frame(
@@ -50,16 +53,23 @@ pokemon <- setRefClass(
         base_experience = base_experience,
         height = height,
         weight = weight,
-        abilities = abilities,
-        moves = moves,
+        abilities = paste(abilities, collapse = ", "),
         sprite = sprite,
-        stats = stats,
-        types = types
+        types = paste(types, collapse = ", ")
       )
     },
     show = function() {
+      cat("Pok\u00e9mon:\n")
+      cat(
+        "#", id, " - ", toupper(name), "\n",
+        sep = ""
+      )
+      cat(
+        "Types: ", paste(types, collapse = ", "), "\n",
+        sep = ""
+      )
     },
-    plot = function() {
+    plot_stats = function() {
     },
     show_sprite = function() {
     },

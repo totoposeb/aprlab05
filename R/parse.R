@@ -57,8 +57,16 @@ parse_species <- function(json) {
   is_legendary <- json$is_legendary
   is_mythical <- json$is_mythical
   gender_rate <- json$gender_rate
-  evolves_from_species <- json$sp$evolves_from_species$name
-  evolution_chain <- json$evolution_chain$url
+  evolves_from_species <- if (length(json$evolves_from_species$name) == 0) {
+    NA_character_
+  } else {
+    json$evolves_from_species$name
+  }
+  evolution_chain <- if (length(json$evolution_chain$url) == 0) {
+    NA_character_
+  } else {
+    json$evolution_chain$url
+  }
   generation <- json$generation$name
 
   rarity_level <- if (isTRUE(is_legendary)) {
@@ -80,7 +88,6 @@ parse_species <- function(json) {
     capture_rate = capture_rate,
     growth_rate = growth_rate,
     rarity_level = rarity_level,
-    stringsAsFactors = FALSE,
     gender_rate = gender_rate,
     evolves_from_species = evolves_from_species,
     evolution_chain = evolution_chain,
