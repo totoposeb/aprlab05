@@ -43,6 +43,11 @@ parse_pokemon <- function(json) {
     } else {
       json$sprites$front_default
     },
+    image = if (length(json$sprites$other$home$front_default) == 0) {
+      NA_character_
+    } else {
+      json$sprites$other$home$front_default
+    },
     species = json$species$name
   )
 }
@@ -125,4 +130,9 @@ parse_type <- function(json) {
   defense[names_from(dr$no_damage_from)] <- 0
   
   cbind(attack = attack, defense = defense)
+}
+
+draw_sprite <- function(img) {
+  grid::grid.newpage()
+  grid::grid.raster(img, interpolate = FALSE)
 }

@@ -32,3 +32,17 @@ request_api <- function(path, limit = NULL, offset = NULL) {
   text <- httr2::resp_body_string(resp)
   jsonlite::fromJSON(text, simplifyVector = FALSE)
 }
+
+request_sprite <- function(url) {
+  resp <- httr2::request(url) |>
+    httr2::req_user_agent("aprlab05 R package") |>
+    httr2::req_cache(path = file.path(tempdir(), "aprlab05")) |>
+    httr2::req_error(is_error = function(resp) FALSE) |>
+    httr2::req_perform()
+
+  if (httr2::resp_status(resp) != 200) {
+    stop("Could not download the picture. Status: ", httr2::resp_status(resp), ".")
+  }
+
+  png::readPNG(httr2::resp_body_raw(resp))
+}
