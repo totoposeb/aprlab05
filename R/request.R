@@ -25,7 +25,7 @@ request_api <- function(path, limit = NULL, offset = NULL) {
     stop("Path '", path, "' not found. Check the spelling.")
   }
 
-  if (status != 200) {
+  if (!status %in% c(200, 304)) {
     stop("Request failed with status ", status, ".")
   }
 
@@ -40,7 +40,8 @@ request_sprite <- function(url) {
     httr2::req_error(is_error = function(resp) FALSE) |>
     httr2::req_perform()
 
-  if (httr2::resp_status(resp) != 200) {
+  status <- httr2::resp_status(resp)
+  if (!status %in% c(200, 304)) {
     stop("Could not download the picture. Status: ", httr2::resp_status(resp), ".")
   }
 
