@@ -1,0 +1,139 @@
+---
+title: "aprlab05"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{aprlab05}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = httr2::is_online()
+)
+```
+
+```{r setup}
+library(aprlab05)
+```
+
+## Introduction
+
+This package includes a reference class (RC) `pokemon`, which gets the data of a Pokémon from PokéAPI, as well as four functions that work with several Pokémon: `get_pokemon()`, `get_species()`, `list_pokemon()` and `type_matchup()`.
+
+## The data
+
+For this demonstration the data will be downloaded from [PokéAPI](https://pokeapi.co/), so an internet connection is needed. From its own website:
+
+> This is a full RESTful API linked to an extensive database detailing everything about the Pokémon main game series.
+
+The responses are cached during the R session, so the same request is not sent twice.
+
+## Creating a Pokémon
+
+To create a `pokemon` object, run:
+
+```{r}
+p <- pokemon$new("fuecoco")
+```
+
+The only argument `name` is a single string with the name of the Pokémon.
+
+After running this statement, the data is downloaded and everything is stored within `p`.
+
+## Printing the Pokémon: `show()`
+
+Printing the object calls the `show()` method, which displays the id, the name and the types of the Pokémon.
+
+```{r}
+p
+```
+
+## Data: `data()`
+
+The `data()` method returns a data.frame with one row, which contains the main attributes of the Pokémon and its base stats.
+
+```{r}
+p$data()
+```
+
+## Base stats plot: `plot_stats()`
+
+The `plot_stats()` method displays a plot using `ggplot2` with the six base stats of the Pokémon and their total. The sprite of the Pokémon is drawn in the upper right corner.
+
+```{r, fig.width = 7, fig.height = 4}
+p$plot_stats()
+```
+
+## Pictures: `show_sprite()` and `show_image()`
+
+The `show_sprite()` method displays the sprite of the Pokémon.
+
+```{r, fig.width = 2, fig.height = 2}
+p$show_sprite()
+```
+
+The `show_image()` method displays its image from Pokémon HOME.
+
+```{r, fig.width = 3, fig.height = 3}
+p$show_image()
+```
+
+## Type effectiveness: `get_type_effectiveness()`
+
+The `get_type_effectiveness()` method returns a matrix with one row for each of the 18 types and two columns:
+
+1. **attack** shows the damage multiplier when the Pokémon attacks a Pokémon of that type.
+2. **defense** shows the damage multiplier when the Pokémon is hit by a move of that type.
+
+```{r}
+p$get_type_effectiveness()
+```
+
+## Species information: `get_species_info()`
+
+The `get_species_info()` method downloads the information of the species of the Pokémon and returns it as a list. The rarity level, gender rate, evolution and generation are also stored within `p`.
+
+```{r}
+p$get_species_info()
+```
+
+The rarity level is our own definition: legendary and mythical Pokémon keep that label, and the rest are `Rare`, `Uncommon` or `Common` depending on their capture rate.
+
+## Several Pokémon: `get_pokemon()` and `get_species()`
+
+The `get_pokemon()` function returns a data.frame with one row for each name, using the `data()` method.
+
+```{r}
+get_pokemon(c("fuecoco", "pikachu", "skeledirge"))
+```
+
+The `get_species()` function returns a data.frame with the species information for each name.
+
+```{r}
+get_species(c("fuecoco", "pikachu", "magearna"))
+```
+
+## Listing Pokémon: `list_pokemon()`
+
+The `list_pokemon()` function returns a vector with the names of all the Pokémon of one type.
+
+```{r}
+head(list_pokemon("fire"))
+```
+
+Without a type, it returns the names of all the Pokémon in the API.
+
+```{r}
+length(list_pokemon())
+```
+
+## Type matchup: `type_matchup()`
+
+The `type_matchup()` function compares the types of two Pokémon. It returns a data.frame with one row, where `attack` is the damage multiplier when the first Pokémon attacks the second, and `defense` when the second attacks the first.
+
+```{r}
+type_matchup("pikachu", "skeledirge")
+```
