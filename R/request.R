@@ -1,15 +1,14 @@
-#' send request to PokéAPI and return JSON
-#'
-#' @param path Character. API path, e.g. "pokemon/pikachu".
-#' @return A list containing the parsed JSON response.
-#' @noRd
 request_api <- function(path, limit = NULL, offset = NULL) {
+  # Calls main API
+
+  # Validates inputs
   stopifnot(
     is.character(path),
     length(path) == 1,
     nzchar(path)
   )
   
+  # Sends request
   resp <- httr2::request("https://pokeapi.co/api/v2") |>
     httr2::req_url_path_append(path) |>
     httr2::req_url_query(limit = limit, offset = offset) |>
@@ -29,11 +28,14 @@ request_api <- function(path, limit = NULL, offset = NULL) {
     stop("Request failed with status ", status, ".")
   }
 
+  # Processes response
   text <- httr2::resp_body_string(resp)
   jsonlite::fromJSON(text, simplifyVector = FALSE)
 }
 
 request_sprite <- function(url) {
+  # Calls image URLs
+  
   resp <- httr2::request(url) |>
     httr2::req_user_agent("aprlab05 R package") |>
     httr2::req_cache(path = file.path(tempdir(), "aprlab05")) |>

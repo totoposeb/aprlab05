@@ -10,7 +10,9 @@ get_species(names)
 \item{names}{A character vector of Pokémon species names.}
 }
 \value{
-A data frame with columns: ...
+A data frame with columns: name, capture_rate, growth_rate,
+rarity_level, gender_rate, evolves_from_species, evolution_chain and
+generation.
 }
 \description{
 Retrieve species-level information for one or more Pokémon.

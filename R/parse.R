@@ -1,6 +1,7 @@
-# 1. get the basic attributes of a pokemon
-# e.g. "pokemon/pikachu"
 parse_pokemon <- function(json) {
+  # Parses a json response from the pokemon/ endpoint
+  # e.g.: "pokemon/pikachu"
+
   stats_values <- vapply(
     json$stats,
     function(s) s$base_stat,
@@ -19,7 +20,11 @@ parse_pokemon <- function(json) {
   list(
     id = json$id,
     name = json$name,
-    base_experience = json$base_experience,
+    base_experience = if (length(json$base_experience) == 0) {
+      NA_real_
+    } else {
+      json$base_experience
+    },
     height = json$height,
     weight = json$weight,
     abilities = vapply(
@@ -53,9 +58,10 @@ parse_pokemon <- function(json) {
 }
 
 
-# 2. get the species attributes
-# e.g. "pokemon-species/pikachu"
 parse_species <- function(json) {
+  # Parses a json response from the pokemon-species/ endpoint
+  # e.g. "pokemon-species/pikachu"
+
   name <- json$name
   capture_rate <- json$capture_rate
   growth_rate <- json$growth_rate$name
@@ -101,21 +107,27 @@ parse_species <- function(json) {
 }
 
 
-#3. for type
+# For parsing Pokémon types
 
 type_names <- function() {
+  # Returns a vector of all Pokémon types
   c(
-    "normal", "fire", "water", "electric", "grass", "ice",
-    "fighting", "poison", "ground", "flying", "psychic", "bug",
-    "rock", "ghost", "dragon", "dark", "steel", "fairy"
+    "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison",
+    "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark",
+    "steel", "fairy"
   )
 }
 
+
 names_from <- function(x) {
+  # Pulls the name out of each element of a list and returns the names as a 
+  # character vector
   vapply(x, function(e) e$name, character(1))
 }
 
+
 parse_type <- function(json) {
+  # Parses a json response from the type/ endpoint
   attack <- stats::setNames(rep(1, 18), type_names())
   defense <- stats::setNames(rep(1, 18), type_names())
   
@@ -132,7 +144,9 @@ parse_type <- function(json) {
   cbind(attack = attack, defense = defense)
 }
 
+
 draw_sprite <- function(img) {
+  # Draws an img response from requesting an image URL
   grid::grid.newpage()
   grid::grid.raster(img, interpolate = FALSE)
 }

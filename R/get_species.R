@@ -3,7 +3,9 @@
 #' Retrieve species-level information for one or more Pokémon.
 #'
 #' @param names A character vector of Pokémon species names.
-#' @return A data frame with columns: ...
+#' @return A data frame with columns: name, capture_rate, growth_rate,
+#'   rarity_level, gender_rate, evolves_from_species, evolution_chain and
+#'   generation.
 #' @export
 #' @examplesIf httr2::is_online()
 #' get_species("Fuecoco")
